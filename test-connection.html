@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Apps Script Connection</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        .loading {
+            background: #f0f0f0;
+            color: #666;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-box">
+        <h1>🔌 Connection Test</h1>
+        <p>This page tests if your Google Apps Script is properly configured.</p>
+        
+        <div id="status" class="status loading">
+            Testing connection...
+        </div>
+        
+        <div id="details" class="details" style="display: none;"></div>
+        
+        <button onclick="testConnection()" style="margin-top: 15px;">
+            Test Again
+        </button>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyd4I5TYzjWau1o0NddNWSlqw33iXybJ5oCviNZVWRJ1cmToMkziQsH52_s6WYAuRxw5w/exec';
+
+        async function testConnection() {
+            const statusDiv = document.getElementById('status');
+            const detailsDiv = document.getElementById('details');
+            
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = 'Testing connection...';
+            detailsDiv.style.display = 'none';
+            
+            try {
+                console.log('[v0] Testing GET request to:', SCRIPT_URL);
+                
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                
+                console.log('[v0] Response:', data);
+                
+                if (data.success) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✓ Connection successful! Your Apps Script is working.';
+                    detailsDiv.textContent = 'Response: ' + JSON.stringify(data, null, 2);
+                    detailsDiv.style.display = 'block';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '✗ Connection failed: ' + data.message;
+                    detailsDiv.textContent = 'Response: ' + JSON.stringify(data, null, 2);
+                    detailsDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('[v0] Connection error:', error);
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '✗ Connection failed: ' + error.message;
+                detailsDiv.textContent = 'Error details:\n' + error.toString() + '\n\nMake sure:\n1. Apps Script is deployed as Web App\n2. "Who has access" is set to "Anyone"\n3. You created a NEW deployment after any code changes';
+                detailsDiv.style.display = 'block';
+            }
+        }
+
+        // Test on page load
+        testConnection();
+    </script>
+</body>
+</html>

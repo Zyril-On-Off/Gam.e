@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Testing Instructions</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        ol {
+            line-height: 1.8;
+        }
+        li {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 CORS Error? Read This!</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Problem:</strong> You're getting CORS errors because you're opening HTML files directly from your file system (file://).
+        </div>
+
+        <h2>Solution 1: Deploy to GitHub Pages (Recommended)</h2>
+        <ol>
+            <li>Create a new repository on GitHub</li>
+            <li>Upload all your HTML, CSS, and JS files</li>
+            <li>Go to <strong>Settings → Pages</strong></li>
+            <li>Select your branch (main) and click <strong>Save</strong></li>
+            <li>Access your site at: <code>https://yourusername.github.io/repo-name/</code></li>
+        </ol>
+
+        <div class="success">
+            <strong>✅ This will fix all CORS issues!</strong>
+        </div>
+
+        <h2>Solution 2: Run a Local Web Server</h2>
+        
+        <h3>Option A: Python (if installed)</h3>
+        <div class="code-block">
+            # Navigate to your project folder, then run:<br>
+            python -m http.server 8000<br>
+            <br>
+            # Then open: http://localhost:8000/register.html
+        </div>
+
+        <h3>Option B: Node.js (if installed)</h3>
+        <div class="code-block">
+            # Install http-server globally:<br>
+            npm install -g http-server<br>
+            <br>
+            # Navigate to your project folder, then run:<br>
+            http-server -p 8000<br>
+            <br>
+            # Then open: http://localhost:8000/register.html
+        </div>
+
+        <h3>Option C: VS Code Live Server Extension</h3>
+        <ol>
+            <li>Install the "Live Server" extension in VS Code</li>
+            <li>Right-click on <code>register.html</code></li>
+            <li>Select "Open with Live Server"</li>
+        </ol>
+
+        <h2>Why This Happens</h2>
+        <p>
+            When you open HTML files directly (file://), browsers block requests to external APIs for security reasons. 
+            You need to serve your files through HTTP (http:// or https://) for the fetch requests to work properly.
+        </p>
+    </div>
+</body>
+</html>
